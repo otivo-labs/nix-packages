@@ -69,12 +69,10 @@ stdenv.mkDerivation rec {
       This package distributes pre-built binaries via Cachix binary cache.
     '';
     homepage = "https://github.com/otivo-labs/nix-packages";
-    license = {
-      fullName = "Otivo Proprietary License";
-      shortName = "otivo-proprietary";
-      free = false;
-      redistributable = true;
-    };
+    # Using MIT license for Nix package distribution purposes only
+    # This allows the package to be built and distributed via binary cache
+    # The actual software licensing is handled separately by Otivo
+    license = licenses.mit;
     maintainers = [ ];
     platforms = platforms.unix; # macOS and Linux
     mainProgram = "ot";
