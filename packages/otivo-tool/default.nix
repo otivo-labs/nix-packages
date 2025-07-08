@@ -69,7 +69,7 @@ stdenv.mkDerivation rec {
       This package distributes pre-built binaries via Cachix binary cache.
     '';
     homepage = "https://github.com/otivo-labs/nix-packages";
-    license = licenses.unfree; # Proprietary
+    license = licenses.unfreeRedistributable; # Proprietary but redistributable
     maintainers = [ ];
     platforms = platforms.unix; # macOS and Linux
     mainProgram = "ot";
