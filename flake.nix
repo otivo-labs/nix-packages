@@ -32,14 +32,24 @@
           buildInputs = with pkgs; [
             cachix
             git
+            jq              # For JSON processing in tests
+            curl            # For manual cache testing
+            nix-tree        # For analyzing derivations
           ];
           
           shellHook = ''
             echo "🚀 Otivo Package Registry Development Environment"
             echo "Available commands:"
-            echo "  nix build .#otivo-tool    # Test package build"
-            echo "  nix run .#otivo-tool      # Test package run"
-            echo "  cachix use otivo-ot       # Configure cache"
+            echo "  nix build .#otivo-tool --accept-flake-config    # Test package build"
+            echo "  nix run .#otivo-tool --accept-flake-config      # Test package run"
+            echo "  nix flake check --accept-flake-config           # Check flake validity"
+            echo "  cachix use otivo-ot                             # Configure cache"
+            echo "  nix flake show --accept-flake-config            # Show flake structure"
+            echo ""
+            echo "🔧 Development tips:"
+            echo "  • Use --accept-flake-config flag for all nix commands"
+            echo "  • Set NIXPKGS_ALLOW_UNFREE=1 if running without nix.conf"
+            echo "  • Check cache status: curl -I https://otivo-ot.cachix.org"
             echo ""
           '';
         };
