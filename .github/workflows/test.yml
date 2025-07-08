@@ -32,39 +32,39 @@ jobs:
         # No auth token needed for reading from public cache
         
     - name: Test flake check
-      run: nix flake check -L --accept-flake-config
+      run: nix flake check -L --accept-flake-config --impure
       env: 
         NIXPKGS_ALLOW_UNFREE: 1
       
     - name: Test package build
-      run: nix build .#otivo-tool -L --accept-flake-config
+      run: nix build .#otivo-tool -L --accept-flake-config --impure
       env: 
         NIXPKGS_ALLOW_UNFREE: 1
       
     - name: Test package metadata
       run: |
-        nix show-derivation .#otivo-tool --accept-flake-config | jq '.[] | {pname: .env.pname, version: .env.version}'
+        nix show-derivation .#otivo-tool --accept-flake-config --impure | jq '.[] | {pname: .env.pname, version: .env.version}'
       env: 
         NIXPKGS_ALLOW_UNFREE: 1
         
     - name: Test package run (basic check)
       run: |
         # Test that the package can be invoked (will show placeholder message without cache)
-        nix run .#otivo-tool --accept-flake-config -- --help || echo "Expected: binary not available without cache substitution"
+        nix run .#otivo-tool --accept-flake-config --impure -- --help || echo "Expected: binary not available without cache substitution"
       env: 
         NIXPKGS_ALLOW_UNFREE: 1
         
     - name: Test direct installation
       run: |
         # Test profile installation
-        nix profile install .#otivo-tool --accept-flake-config
+        nix profile install .#otivo-tool --accept-flake-config --impure
         echo "Profile installation successful"
       env: 
         NIXPKGS_ALLOW_UNFREE: 1
         
     - name: Test development shell
       run: |
-        nix develop --accept-flake-config -c echo "Development shell works"
+        nix develop --accept-flake-config --impure -c echo "Development shell works"
       env: 
         NIXPKGS_ALLOW_UNFREE: 1
 
@@ -86,7 +86,7 @@ jobs:
     - name: Test overlay functionality
       run: |
         # Test that overlay exports work
-        nix eval .#overlays.default --accept-flake-config --apply 'overlay: "Overlay loaded successfully"'
+        nix eval .#overlays.default --accept-flake-config --impure --apply 'overlay: "Overlay loaded successfully"'
       env: 
         NIXPKGS_ALLOW_UNFREE: 1
         
@@ -131,13 +131,13 @@ jobs:
         
         for platform in "${platforms[@]}"; do
           echo "Testing platform: $platform"
-          nix eval .#packages.$platform.otivo-tool.meta.platforms --accept-flake-config --json | jq .
+          nix eval .#packages.$platform.otivo-tool.meta.platforms --accept-flake-config --impure --json | jq .
         done
       env: 
         NIXPKGS_ALLOW_UNFREE: 1
         
     - name: Verify flake outputs
       run: |
-        nix flake show --accept-flake-config --json | jq '.packages | keys' | grep -E "(x86_64-linux|aarch64-linux|x86_64-darwin|aarch64-darwin)"
+        nix flake show --accept-flake-config --impure --json | jq '.packages | keys' | grep -E "(x86_64-linux|aarch64-linux|x86_64-darwin|aarch64-darwin)"
       env: 
         NIXPKGS_ALLOW_UNFREE: 1
