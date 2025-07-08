@@ -81,7 +81,7 @@ Or add to your `nix.conf`:
 
 ```
 substituters = https://otivo-ot.cachix.org https://cache.nixos.org/
-trusted-public-keys = otivo-ot.cachix.org-1:7BzpDnjjH8ki2CT3f6GdOk7QAzPOl+1t3LvTLXqYcSg= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
+trusted-public-keys = otivo-ot.cachix.org-1:pXcMNi0SRifqukzbqjbbwgxMiOr7a3PuCaYwt8UAZRg=
 ```
 
 ## Available Packages

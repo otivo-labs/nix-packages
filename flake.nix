@@ -3,7 +3,7 @@
 
   nixConfig = {
     extra-substituters = ["https://otivo-ot.cachix.org"];
-    extra-trusted-public-keys = ["otivo-ot.cachix.org-1:7BzpDnjjH8ki2CT3f6GdOk7QAzPOl+1t3LvTLXqYcSg="];
+    extra-trusted-public-keys = ["otivo-ot.cachix.org-1:pXcMNi0SRifqukzbqjbbwgxMiOr7a3PuCaYwt8UAZRg="];
   };
 
   inputs = {
