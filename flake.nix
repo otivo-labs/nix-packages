@@ -14,7 +14,11 @@
   outputs = { self, nixpkgs, flake-utils }:
     flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs = nixpkgs.legacyPackages.${system};
+        # Configure nixpkgs to allow unfree packages
+        pkgs = import nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+        };
         
         # Import our package definitions
         otivo-tool = pkgs.callPackage ./packages/otivo-tool { };
@@ -40,15 +44,15 @@
           shellHook = ''
             echo "🚀 Otivo Package Registry Development Environment"
             echo "Available commands:"
-            echo "  NIXPKGS_ALLOW_UNFREE=1 nix build .#otivo-tool --accept-flake-config --impure"
-            echo "  NIXPKGS_ALLOW_UNFREE=1 nix run .#otivo-tool --accept-flake-config --impure"
-            echo "  NIXPKGS_ALLOW_UNFREE=1 nix flake check --accept-flake-config --impure"
-            echo "  cachix use otivo-ot                                                     # Configure cache"
-            echo "  NIXPKGS_ALLOW_UNFREE=1 nix flake show --accept-flake-config --impure  # Show structure"
+            echo "  nix build .#otivo-tool --accept-flake-config"
+            echo "  nix run .#otivo-tool --accept-flake-config"
+            echo "  nix flake check --accept-flake-config"
+            echo "  cachix use otivo-ot                        # Configure cache"
+            echo "  nix flake show --accept-flake-config       # Show structure"
             echo ""
             echo "🔧 Development tips:"
-            echo "  • Use --accept-flake-config --impure flags for all nix commands"
-            echo "  • Set NIXPKGS_ALLOW_UNFREE=1 for unfree packages (this tool is proprietary)"
+            echo "  • Use --accept-flake-config flag for all nix commands"
+            echo "  • Unfree licenses are automatically allowed in this flake"
             echo "  • Check cache status: curl -I https://otivo-ot.cachix.org"
             echo ""
           '';

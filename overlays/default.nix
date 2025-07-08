@@ -1,5 +1,7 @@
 # Overlay for integrating Otivo packages with nixpkgs
 # This allows users to add otivo packages to their nixpkgs instance
+# Note: Users must set config.allowUnfree = true in their nixpkgs config
+# to use these packages, as they contain proprietary software
 
 final: prev: {
   # Add Otivo Tool to the package set
